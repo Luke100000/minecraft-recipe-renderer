@@ -146,7 +146,7 @@ def render_recipes(
     row_width: int,
     animated: bool,
     max_variations: int = 10,
-) -> (io.BytesIO, str):
+) -> bytes:
     # Load resources
     manager = load_manager(dependencies)
     renderer = ItemRenderer(manager)
@@ -210,9 +210,7 @@ def render_recipes(
                 atlas.paste(image[variation % len(image)], (x, y))
             atlases.append(atlas)
 
-    if len(atlases) == 1:
-        return encode_image(atlases[0]), "PNG"
-    else:
+    if animated:
         buffer = io.BytesIO()
         atlases[0].save(
             buffer,
@@ -222,7 +220,9 @@ def render_recipes(
             duration=1000,
             loop=0,
         )
-        return buffer.getvalue(), "GIF"
+        return buffer.getvalue()
+    else:
+        return encode_image(atlases[0])
 
 
 @cache(expire=3600, coder=BytesCoder())
@@ -412,10 +412,12 @@ def setup(app: FastAPI):
         try:
             parsed_dependencies = parse_dependencies(minecraft_version, dependencies)
 
-            result, image_format = await cached_render_recipes(
+            result = await cached_render_recipes(
                 locations, parsed_dependencies, resolution, row_width, animated
             )
         except ValueError as e:
             return Response(status_code=422, content=str(e))
 
-        return Response(content=result, media_type="image/" + image_format)
+        return Response(
+            content=result, media_type="image/gif" if animated else "image/png"
+        )
