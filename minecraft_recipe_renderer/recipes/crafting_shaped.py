@@ -35,7 +35,7 @@ class CraftingShapedRecipe(Recipe):
         self.group = recipe.get("group", None)
         self.show_notification = recipe.get("show_notification", True)
 
-        self.recipe = load_pattern_recipe(recipe["pattern"], recipe["key"])
+        self.recipe = load_pattern_recipe(recipe["pattern"], recipe["key"]) if "pattern" in recipe else []
         self.result = Item(recipe["result"])
 
     def _expand_ingredients(self, resource_manager: "ResourceManager"):

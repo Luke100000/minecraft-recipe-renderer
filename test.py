@@ -9,5 +9,5 @@ manager.load_repository("https://github.com/Luke100000/ImmersiveAircraft")
 manager.post_load()
 renderer = ItemRenderer(manager)
 
-recipe = manager.recipes["immersive_machinery:bamboo_bee"]
-recipe.render(item_renderer=renderer, resolution=2)[0].save("iron_drill.png")
+recipe = manager.recipes["minecraft:andesite_slab_from_andesite_stonecutting"]
+recipe.render(item_renderer=renderer, resolution=2)[0].show()
