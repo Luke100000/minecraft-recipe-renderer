@@ -142,7 +142,7 @@ class ResourceManager:
             self.tags[name] |= processed_tags
 
     def load_model(self, path: Path, name: str):
-        self.models[name] = Model(json.loads(path.read_text()))
+        self.models[name] = Model(name, json.loads(path.read_text()))
 
     def load_lang(self, path: Path):
         self.lang.update(json.loads(path.read_text()))

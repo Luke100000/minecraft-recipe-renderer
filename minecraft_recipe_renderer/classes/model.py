@@ -34,8 +34,9 @@ DEFAULT_DISPLAY = Display({})
 
 
 class Model:
-    def __init__(self, model: dict):
+    def __init__(self, location: str, model: dict):
         self.resolved = False
+        self.location = location
         self.parent = to_location(model["parent"]) if "parent" in model else None
         self.display = (
             Display(model.get("display", {})["gui"])
@@ -61,4 +62,6 @@ class Model:
             self.gui_light = parent.gui_light
 
 
-DEFAULT_ITEM_MODEL = Model({"textures": {"layer0": "item/missing_texture"}})
+DEFAULT_ITEM_MODEL = Model(
+    "minecraft:builtin/generated", {"textures": {"layer0": "item/missing_texture"}}
+)

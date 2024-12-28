@@ -1,3 +1,5 @@
+from functools import cache
+from pathlib import Path
 from typing import TYPE_CHECKING
 
 import numpy as np
@@ -23,6 +25,21 @@ faces = [
     [3, 7, 4, 0],  # left
     [6, 2, 1, 5],  # right
 ]
+
+# Especially entity based items cannot be rendered correctly, so use a list of overrides
+# TODO: Better solution
+overrides = {
+    "minecraft:item/conduit": "conduit",
+}
+
+root = Path(__file__)
+
+
+@cache
+def load_override_texture(name: str):
+    return Image.open(root.parent / "assets/overrides" / (name + ".png")).convert(
+        "RGBA"
+    )
 
 
 def rotate(vertices, rotation_angles):
@@ -80,7 +97,11 @@ class ItemRenderer:
         )
 
     def render(self, model: Model, resolution: int):
-        if model.elements:
+        if model.location in overrides:
+            return load_override_texture(overrides[model.location]).resize(
+                (resolution, resolution), Image.Resampling.NEAREST
+            )
+        elif model.elements:
             canvas = Image.new("RGBA", (resolution, resolution), color=(0, 0, 0, 0))
             depth = np.zeros((resolution, resolution), dtype=float)
 
