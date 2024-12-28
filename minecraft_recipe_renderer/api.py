@@ -192,7 +192,7 @@ def render_recipes(
             x = 0
             y += last_h
             last_h = 0
-            if y > (2048 if animated else 8192):
+            if y > (2048 if animated else 4096):
                 break
 
     if len(images) == 1:
@@ -293,6 +293,11 @@ def setup(app: FastAPI):
             title="Resolution",
             description="The resolution of the image, a multiple of 16.",
         ),
+        _c: int = Query(
+            default=0,
+            title="Cache Breaker",
+            description="This flag is ignored and can be used to break caches.",
+        ),
     ) -> Response:
         if resolution % 16 != 0:
             raise ValueError("Resolution must be a multiple of 16.")
@@ -346,6 +351,11 @@ def setup(app: FastAPI):
             default="none",
             title="Background Style",
             description="The style of the background, can be 'none', 'simple', or 'fancy'.",
+        ),
+        _c: int = Query(
+            default=0,
+            title="Cache Breaker",
+            description="This flag is ignored and can be used to break caches.",
         ),
     ) -> Response:
         if resolution % 16 != 0:
@@ -404,6 +414,11 @@ def setup(app: FastAPI):
             default=False,
             title="Animated GIF",
             description="Animate the recipe if it has multiple variations.",
+        ),
+        _c: int = Query(
+            default=0,
+            title="Cache Breaker",
+            description="This flag is ignored and can be used to break caches.",
         ),
     ) -> Response:
         if resolution % 16 != 0:
