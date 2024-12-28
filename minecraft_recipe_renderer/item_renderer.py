@@ -137,7 +137,7 @@ class ItemRenderer:
         # Apply the transformations
         cuboid_vertices = rotate(cuboid_vertices, model.display.rotation)
         cuboid_vertices *= model.display.scale
-        cuboid_vertices *= 1.0625
+        cuboid_vertices *= 1 + 12 / canvas.size[0]
         cuboid_vertices += model.display.translation
 
         # OpenGL coordinate system

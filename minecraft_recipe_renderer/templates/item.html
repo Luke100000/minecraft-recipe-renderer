@@ -83,13 +83,13 @@
 
         const format = document.getElementById('output-format').value;
         if (format === "markdown") {
-            document.getElementById('code').innerHTML = `![Recipe](${url})`;
+            document.getElementById('code').innerHTML = `![Itrem](${url})`;
         } else if (format === "bbcode") {
             document.getElementById('code').innerHTML = `[img]${url}[/img]`;
         } else if (format === "raw-url") {
             document.getElementById('code').innerHTML = url;
         } else if (format === "html") {
-            document.getElementById('code').innerHTML = `<img src="${url}" alt="Recipe">`;
+            document.getElementById('code').innerHTML = `<img src="${url}" alt="Item">`;
         }
         document.getElementById('preview').src = url;
         document.getElementById('preview').hidden = false;
