@@ -1,4 +1,7 @@
-def to_location(item: str | dict):
+from typing import Union
+
+
+def to_location(item: Union[str, dict]):
     if isinstance(item, str):
         parts = item.split(":", 1)
         if len(parts) == 1:
@@ -13,7 +16,7 @@ def to_location(item: str | dict):
         return to_location(item["item"])
 
 
-def to_ingredient(ingredient: str | dict | list[dict | str]):
+def to_ingredient(ingredient: Union[Union[str, dict], list[Union[str, dict]]]):
     if isinstance(ingredient, list):
         return [to_location(i) for i in ingredient]
     else:

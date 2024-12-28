@@ -1,5 +1,5 @@
 <head>
-    <link rel="stylesheet" href="/static/styles.css">
+    <link rel="stylesheet" href="static/styles.css">
     <title>Resource Pack Preview Generator</title>
     <meta name="description" content="Generate a preview image of Minecraft resources.">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -11,9 +11,9 @@
     <h1>Resource Pack Preview Generator</h1>
 
     <div class="buttons">
-        <button onclick="window.location.href='/?page=recipes';">Recipes</button>
-        <button onclick="window.location.href='/?page=atlas';">Atlas</button>
-        <button onclick="window.location.href='/?page=item';">Item</button>
+        <button onclick="window.location.href='./?page=recipes';">Recipes</button>
+        <button onclick="window.location.href='./?page=atlas';">Atlas</button>
+        <button onclick="window.location.href='./?page=item';">Item</button>
     </div>
 
 <br>
@@ -79,7 +79,7 @@
         const dependencies = encodeURIComponent(document.getElementById('dependencies').value).replace("\n", ";");
         const resolution = document.getElementById('resolution').value;
 
-        const url = `/item?minecraft_version=${version}&location=${resourceLocation}&dependencies=${dependencies}&resolution=${resolution}`;
+        const url = `${window.location.origin}${window.location.pathname.replace(/\/[^/]*$/, '/')}item?minecraft_version=${version}&location=${resourceLocation}&dependencies=${dependencies}&resolution=${resolution}`;
 
         const format = document.getElementById('output-format').value;
         if (format === "markdown") {

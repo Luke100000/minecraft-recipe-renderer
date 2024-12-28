@@ -1,6 +1,7 @@
 import asyncio
 import io
 import re
+from pathlib import Path
 
 from PIL import Image
 from cachetools import cached, TTLCache
@@ -34,7 +35,7 @@ known_dependencies = {
 
 @cached(cache=TTLCache(maxsize=8, ttl=3600), key=lambda dependencies: str(dependencies))
 def load_manager(dependencies: list[str]) -> ResourceManager:
-    manager = ResourceManager()
+    manager = ResourceManager(Path("cache/mcr/"))
     for dep in dependencies:
         manager.load_dependency(dep)
     manager.post_load()
@@ -246,9 +247,13 @@ def parse_dependencies(minecraft_version: str, dependencies: str) -> list[str]:
 
 
 def setup(app: FastAPI):
-    templates = Jinja2Templates(directory="templates")
+    templates = Jinja2Templates(directory=Path(__file__).parent / "templates")
 
-    app.mount("/static", StaticFiles(directory="static"), name="static")
+    app.mount(
+        "/static",
+        StaticFiles(directory=Path(__file__).parent / "static"),
+        name="static",
+    )
 
     @app.get("/", response_class=HTMLResponse)
     async def get_index(request: Request, page: str = "recipes"):

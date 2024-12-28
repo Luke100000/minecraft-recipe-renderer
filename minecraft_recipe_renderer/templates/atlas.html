@@ -1,5 +1,5 @@
 <head>
-    <link rel="stylesheet" href="/static/styles.css">
+    <link rel="stylesheet" href="static/styles.css">
     <title>Resource Pack Preview Generator</title>
     <meta name="description" content="Generate a preview image of Minecraft resources.">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -11,9 +11,9 @@
     <h1>Resource Pack Preview Generator</h1>
 
     <div class="buttons">
-        <button onclick="window.location.href='/?page=recipes';">Recipes</button>
-        <button onclick="window.location.href='/?page=atlas';">Atlas</button>
-        <button onclick="window.location.href='/?page=item';">Item</button>
+        <button onclick="window.location.href='./?page=recipes';">Recipes</button>
+        <button onclick="window.location.href='./?page=atlas';">Atlas</button>
+        <button onclick="window.location.href='./?page=item';">Item</button>
     </div>
 
 <br>
@@ -32,13 +32,26 @@
     </div>
 
     <div>
-        <label for="row-width">Row Width</label>
-        <select id="row-width">
-            <option value="512">512</option>
-            <option value="768">768</option>
-            <option value="1024">1024</option>
-            <option value="1536">1536</option>
-            <option value="2048">2048</option>
+        <label for="background-style">Background Style</label>
+        <select id="background-style">
+            <option value="fancy">Fancy</option>
+            <option value="simple">Simple</option>
+            <option value="none">None</option>
+        </select>
+    </div>
+
+    <div>
+        <label for="row-size">Row Width</label>
+        <select id="row-size">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6" selected="selected">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
         </select>
     </div>
 
@@ -47,12 +60,6 @@
         <select id="version">
             <option value="1.20.1">1.20.1</option>
         </select>
-    </div>
-
-    <div>
-        <label for="animated">
-            <input type="checkbox" id="animated"> Animated
-        </label>
     </div>
 </div>
 
@@ -94,10 +101,10 @@
         const resourceLocations = encodeURIComponent(document.getElementById('resource-locations').value).replace("\n", ";");
         const dependencies = encodeURIComponent(document.getElementById('dependencies').value).replace("\n", ";");
         const resolution = document.getElementById('resolution').value;
-        const animated = document.getElementById('animated').checked ? 'true' : 'false';
-        const rowWidth = document.getElementById('row-width').value;
+        const bgStyle = document.getElementById('background-style').value;
+        const rowSize = document.getElementById('row-size').value;
 
-        const url = `/recipes?minecraft_version=${version}&locations=${resourceLocations}&dependencies=${dependencies}&resolution=${resolution}&animated=${animated}&&row_width=${rowWidth}`;
+        const url = `${window.location.origin}${window.location.pathname.replace(/\/[^/]*$/, '/')}atlas?minecraft_version=${version}&locations=${resourceLocations}&dependencies=${dependencies}&resolution=${resolution}&background=${bgStyle}&row_size=${rowSize}`;
 
         const format = document.getElementById('output-format').value;
         if (format === "markdown") {

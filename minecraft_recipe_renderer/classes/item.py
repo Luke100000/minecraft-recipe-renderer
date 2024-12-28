@@ -1,8 +1,10 @@
+from typing import Union
+
 from ..utils import to_location
 
 
 class Item:
-    def __init__(self, item: dict | str):
+    def __init__(self, item: Union[str, dict]):
         if isinstance(item, str):
             self.id = to_location(item)
             self.count = 1
