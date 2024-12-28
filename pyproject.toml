@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "minecraft-recipe-renderer"
+version = "0.1.0"
+description = ""
+authors = ["Luke100000 <jonas.peche@aon.at>"]
+readme = "README.md"
+packages = [{include = "minecraft_recipe_renderer"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+pillow = "^11.0.0"
+numpy = "^2.2.1"
+gitpython = "^3.1.43"
+fastapi-cache2 = {extras = ["redis"], version = "^0.2.2"}
+aioredis = "^2.0.1"
+cachetools = "^5.5.0"
+requests = "^2.32.3"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
