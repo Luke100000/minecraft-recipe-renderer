@@ -75,15 +75,15 @@
 
     function updatePreview() {
         const version = document.getElementById('version').value;
-        const resourceLocation = encodeURIComponent(document.getElementById('resource-location').value).replace("\n", ";");
-        const dependencies = encodeURIComponent(document.getElementById('dependencies').value).replace("\n", ";");
+        const resourceLocations = encodeURIComponent(document.getElementById('resource-locations').value.replace("\n", ";"));
+        const dependencies = encodeURIComponent(document.getElementById('dependencies').value.replace("\n", ";"));
         const resolution = document.getElementById('resolution').value;
 
         const url = `${window.location.origin}${window.location.pathname.replace(/\/[^/]*$/, '/')}item?minecraft_version=${version}&location=${resourceLocation}&dependencies=${dependencies}&resolution=${resolution}`;
 
         const format = document.getElementById('output-format').value;
         if (format === "markdown") {
-            document.getElementById('code').innerHTML = `![Itrem](${url})`;
+            document.getElementById('code').innerHTML = `![Item](${url})`;
         } else if (format === "bbcode") {
             document.getElementById('code').innerHTML = `[img]${url}[/img]`;
         } else if (format === "raw-url") {

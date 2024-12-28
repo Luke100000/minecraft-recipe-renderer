@@ -20,9 +20,6 @@ class SmithingTransformRecipe(Recipe):
         self.addition = to_ingredient(recipe["addition"])
         self.result = Item(recipe["result"])
 
-    def get_name(self) -> str:
-        return "Smithing Table"
-
     def render(
         self,
         item_renderer: "ItemRenderer",
@@ -41,7 +38,11 @@ class SmithingTransformRecipe(Recipe):
             canvas.texture("arrow", 68, 20)
 
             # Text
-            canvas.text(self.get_name(), 7, 6)
+            if print_name:
+                name = item_renderer.resource_manager.get_lang(self.result.id)
+            else:
+                name = "Smithing Table"
+            canvas.text(name, 7, 6)
 
             # Ingredients
             item = Item(self.template[variation % len(self.template)])

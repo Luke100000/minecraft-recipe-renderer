@@ -98,8 +98,8 @@
 
     function updatePreview() {
         const version = document.getElementById('version').value;
-        const resourceLocations = encodeURIComponent(document.getElementById('resource-locations').value).replace("\n", ";");
-        const dependencies = encodeURIComponent(document.getElementById('dependencies').value).replace("\n", ";");
+        const resourceLocations = encodeURIComponent(document.getElementById('resource-locations').value.replace("\n", ";"));
+        const dependencies = encodeURIComponent(document.getElementById('dependencies').value.replace("\n", ";"));
         const resolution = document.getElementById('resolution').value;
         const bgStyle = document.getElementById('background-style').value;
         const rowSize = document.getElementById('row-size').value;

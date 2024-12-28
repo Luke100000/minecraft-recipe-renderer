@@ -9,5 +9,7 @@ manager.load_repository("https://github.com/Luke100000/ImmersiveAircraft")
 manager.post_load()
 renderer = ItemRenderer(manager)
 
-recipe = manager.recipes["minecraft:andesite_slab_from_andesite_stonecutting"]
-recipe.render(item_renderer=renderer, resolution=2)[0].show()
+renderer.render(manager.get_model("minecraft:heart_of_the_sea"), resolution=32).show()
+
+# recipe = manager.recipes["minecraft:heart_of_the_sea"]
+# recipe.render(item_renderer=renderer, resolution=2)[0].show()

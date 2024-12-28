@@ -34,7 +34,11 @@ class StonecuttingRecipe(Recipe):
             canvas.texture("arrow", 32, 20)
 
             # Text
-            canvas.text("Stone Cutting", 7, 6)
+            if print_name:
+                name = item_renderer.resource_manager.get_lang(self.result.id)
+            else:
+                name = "Stone Cutting"
+            canvas.text(name, 7, 6)
 
             # Ingredients
             item = Item(self.ingredient[variation])
