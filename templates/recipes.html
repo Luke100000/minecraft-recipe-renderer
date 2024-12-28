@@ -1,0 +1,116 @@
+<head>
+    <link rel="stylesheet" href="/static/styles.css">
+    <title>Resource Pack Preview Generator</title>
+    <meta name="description" content="Generate a preview image of Minecraft resources.">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noindex, nofollow">
+</head>
+
+<body>
+<div class="container">
+    <h1>Resource Pack Preview Generator</h1>
+
+    <div class="buttons">
+        <button onclick="window.location.href='/?page=recipes';">Recipes</button>
+        <button onclick="window.location.href='/?page=atlas';">Atlas</button>
+        <button onclick="window.location.href='/?page=item';">Item</button>
+    </div>
+
+<br>
+
+<div class="settings-grid">
+    <div>
+        <label for="resolution">Resolution</label>
+        <select id="resolution">
+            <option value="16">16x</option>
+            <option value="32" selected="selected">32x</option>
+            <option value="48">48x</option>
+            <option value="64">64x</option>
+            <option value="96">96x</option>
+            <option value="128">128x</option>
+        </select>
+    </div>
+
+    <div>
+        <label for="row-width">Row Width</label>
+        <select id="row-width">
+            <option value="512">512</option>
+            <option value="768">768</option>
+            <option value="1024">1024</option>
+            <option value="1536">1536</option>
+            <option value="2048">2048</option>
+        </select>
+    </div>
+
+    <div>
+        <label for="version">Minecraft Version</label>
+        <select id="version">
+            <option value="1.20.1">1.20.1</option>
+        </select>
+    </div>
+
+    <div>
+        <label for="animated">
+            <input type="checkbox" id="animated"> Animated
+        </label>
+    </div>
+</div>
+
+<label for="resource-locations">Resource Locations</label>
+<textarea id="resource-locations" placeholder="minecraft:iron_ingot"></textarea>
+
+<label for="dependencies">Dependencies</label>
+<textarea id="dependencies" placeholder="https://github.com/Luke100000/ImmersiveAircraft"></textarea>
+
+<br>
+
+<div>
+    <label for="output-format">Output Format</label>
+    <select id="output-format">
+        <option value="markdown">Markdown</option>
+        <option value="bbcode">BBCode</option>
+        <option value="raw-url">Raw URL</option>
+        <option value="html">HTML</option>
+    </select>
+</div>
+
+<textarea id="code" readonly rows="3"></textarea>
+<label for="code"></label>
+
+<img id="preview" src="" alt="Generated Preview" hidden="hidden">
+
+<footer>
+    Not an official Minecraft service. Not approved by or associated with Mojang or Microsoft.
+</footer>
+</div>
+
+<script>
+    document.querySelectorAll('select, textarea, input').forEach(element => {
+        element.addEventListener('change', updatePreview);
+    });
+
+    function updatePreview() {
+        const version = document.getElementById('version').value;
+        const resourceLocations = encodeURIComponent(document.getElementById('resource-locations').value).replace("\n", ";");
+        const dependencies = encodeURIComponent(document.getElementById('dependencies').value).replace("\n", ";");
+        const resolution = document.getElementById('resolution').value;
+        const animated = document.getElementById('animated').checked ? 'true' : 'false';
+        const rowWidth = document.getElementById('row-width').value;
+
+        const url = `/recipes?minecraft_version=${version}&locations=${resourceLocations}&dependencies=${dependencies}&resolution=${resolution}&animated=${animated}&&row_width=${rowWidth}`;
+
+        const format = document.getElementById('output-format').value;
+        if (format === "markdown") {
+            document.getElementById('code').innerHTML = `![Recipe](${url})`;
+        } else if (format === "bbcode") {
+            document.getElementById('code').innerHTML = `[img]${url}[/img]`;
+        } else if (format === "raw-url") {
+            document.getElementById('code').innerHTML = url;
+        } else if (format === "html") {
+            document.getElementById('code').innerHTML = `<img src="${url}" alt="Recipe">`;
+        }
+        document.getElementById('preview').src = url;
+        document.getElementById('preview').hidden = false;
+    }
+</script>
+</body>

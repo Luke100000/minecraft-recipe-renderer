@@ -7,7 +7,10 @@ from cachetools import cached, TTLCache
 from fastapi import Query, FastAPI
 from fastapi_cache import Coder
 from fastapi_cache.decorator import cache
-from starlette.responses import Response
+from starlette.requests import Request
+from starlette.responses import Response, HTMLResponse
+from starlette.staticfiles import StaticFiles
+from starlette.templating import Jinja2Templates
 
 from minecraft_recipe_renderer import ResourceManager, ItemRenderer, Canvas, Item
 from minecraft_recipe_renderer.resource_manager import sanitize_url
@@ -243,6 +246,16 @@ def parse_dependencies(minecraft_version: str, dependencies: str) -> list[str]:
 
 
 def setup(app: FastAPI):
+    templates = Jinja2Templates(directory="templates")
+
+    app.mount("/static", StaticFiles(directory="static"), name="static")
+
+    @app.get("/", response_class=HTMLResponse)
+    async def get_index(request: Request, page: str = "recipes"):
+        if page not in ["recipes", "atlas", "item"]:
+            return Response(status_code=404)
+        return templates.TemplateResponse(request=request, name=f"{page}.html")
+
     @app.get(
         "/item",
         responses={200: {"content": {"image/png": {}}}},
