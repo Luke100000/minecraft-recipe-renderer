@@ -16,56 +16,56 @@
         <button onclick="window.location.href='./?page=item';">Item</button>
     </div>
 
-<br>
+    <br>
 
-<div class="settings-grid">
+    <div class="settings-grid">
+        <div>
+            <label for="resolution">Resolution</label>
+            <select id="resolution">
+                <option value="16">16x</option>
+                <option value="32">32x</option>
+                <option value="48">48x</option>
+                <option value="64" selected="selected">64x</option>
+                <option value="96">96x</option>
+                <option value="128">128x</option>
+                <option value="256">256x</option>
+            </select>
+        </div>
+
+        <div>
+            <label for="version">Minecraft Version</label>
+            <select id="version">
+                <option value="1.20.1">1.20.1</option>
+            </select>
+        </div>
+    </div>
+
+    <label for="resource-location">Resource Location</label>
+    <textarea id="resource-location" placeholder="minecraft:iron_ingot" rows="1"></textarea>
+
+    <label for="dependencies">Dependencies</label>
+    <textarea id="dependencies" placeholder="https://github.com/Luke100000/ImmersiveAircraft"></textarea>
+
+    <br>
+
     <div>
-        <label for="resolution">Resolution</label>
-        <select id="resolution">
-            <option value="16">16x</option>
-            <option value="32">32x</option>
-            <option value="48">48x</option>
-            <option value="64" selected="selected">64x</option>
-            <option value="96">96x</option>
-            <option value="128">128x</option>
-            <option value="256">256x</option>
+        <label for="output-format">Output Format</label>
+        <select id="output-format">
+            <option value="markdown">Markdown</option>
+            <option value="bbcode">BBCode</option>
+            <option value="raw-url">Raw URL</option>
+            <option value="html">HTML</option>
         </select>
     </div>
 
-    <div>
-        <label for="version">Minecraft Version</label>
-        <select id="version">
-            <option value="1.20.1">1.20.1</option>
-        </select>
-    </div>
-</div>
+    <textarea id="code" readonly rows="3"></textarea>
+    <label for="code"></label>
 
-<label for="resource-location">Resource Location</label>
-<textarea id="resource-location" placeholder="minecraft:iron_ingot" rows="1"></textarea>
+    <img id="preview" src="" alt="Generated Preview" hidden="hidden">
 
-<label for="dependencies">Dependencies</label>
-<textarea id="dependencies" placeholder="https://github.com/Luke100000/ImmersiveAircraft"></textarea>
-
-<br>
-
-<div>
-    <label for="output-format">Output Format</label>
-    <select id="output-format">
-        <option value="markdown">Markdown</option>
-        <option value="bbcode">BBCode</option>
-        <option value="raw-url">Raw URL</option>
-        <option value="html">HTML</option>
-    </select>
-</div>
-
-<textarea id="code" readonly rows="3"></textarea>
-<label for="code"></label>
-
-<img id="preview" src="" alt="Generated Preview" hidden="hidden">
-
-<footer>
-    Not an official Minecraft service. Not approved by or associated with Mojang or Microsoft.
-</footer>
+    <footer>
+        Not an official Minecraft service. Not approved by or associated with Mojang or Microsoft.
+    </footer>
 </div>
 
 <script>
@@ -75,7 +75,7 @@
 
     function updatePreview() {
         const version = document.getElementById('version').value;
-        const resourceLocations = encodeURIComponent(document.getElementById('resource-locations').value.replace("\n", ";"));
+        const resourceLocation = encodeURIComponent(document.getElementById('resource-location').value);
         const dependencies = encodeURIComponent(document.getElementById('dependencies').value.replace("\n", ";"));
         const resolution = document.getElementById('resolution').value;
 

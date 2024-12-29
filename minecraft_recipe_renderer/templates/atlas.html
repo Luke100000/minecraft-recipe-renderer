@@ -16,79 +16,79 @@
         <button onclick="window.location.href='./?page=item';">Item</button>
     </div>
 
-<br>
+    <br>
 
-<div class="settings-grid">
+    <div class="settings-grid">
+        <div>
+            <label for="resolution">Resolution</label>
+            <select id="resolution">
+                <option value="16">16x</option>
+                <option value="32" selected="selected">32x</option>
+                <option value="48">48x</option>
+                <option value="64">64x</option>
+                <option value="96">96x</option>
+                <option value="128">128x</option>
+            </select>
+        </div>
+
+        <div>
+            <label for="background-style">Background Style</label>
+            <select id="background-style">
+                <option value="fancy">Fancy</option>
+                <option value="simple">Simple</option>
+                <option value="none">None</option>
+            </select>
+        </div>
+
+        <div>
+            <label for="row-size">Row Width</label>
+            <select id="row-size">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6" selected="selected">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+            </select>
+        </div>
+
+        <div>
+            <label for="version">Minecraft Version</label>
+            <select id="version">
+                <option value="1.20.1">1.20.1</option>
+            </select>
+        </div>
+    </div>
+
+    <label for="resource-locations">Resource Locations</label>
+    <textarea id="resource-locations" placeholder="minecraft:iron_ingot"></textarea>
+
+    <label for="dependencies">Dependencies</label>
+    <textarea id="dependencies" placeholder="https://github.com/Luke100000/ImmersiveAircraft"></textarea>
+
+    <br>
+
     <div>
-        <label for="resolution">Resolution</label>
-        <select id="resolution">
-            <option value="16">16x</option>
-            <option value="32" selected="selected">32x</option>
-            <option value="48">48x</option>
-            <option value="64">64x</option>
-            <option value="96">96x</option>
-            <option value="128">128x</option>
+        <label for="output-format">Output Format</label>
+        <select id="output-format">
+            <option value="markdown">Markdown</option>
+            <option value="bbcode">BBCode</option>
+            <option value="raw-url">Raw URL</option>
+            <option value="html">HTML</option>
         </select>
     </div>
 
-    <div>
-        <label for="background-style">Background Style</label>
-        <select id="background-style">
-            <option value="fancy">Fancy</option>
-            <option value="simple">Simple</option>
-            <option value="none">None</option>
-        </select>
-    </div>
+    <textarea id="code" readonly rows="3"></textarea>
+    <label for="code"></label>
 
-    <div>
-        <label for="row-size">Row Width</label>
-        <select id="row-size">
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-            <option value="6" selected="selected">6</option>
-            <option value="7">7</option>
-            <option value="8">8</option>
-            <option value="9">9</option>
-        </select>
-    </div>
+    <img id="preview" src="" alt="Generated Preview" hidden="hidden">
 
-    <div>
-        <label for="version">Minecraft Version</label>
-        <select id="version">
-            <option value="1.20.1">1.20.1</option>
-        </select>
-    </div>
-</div>
-
-<label for="resource-locations">Resource Locations</label>
-<textarea id="resource-locations" placeholder="minecraft:iron_ingot"></textarea>
-
-<label for="dependencies">Dependencies</label>
-<textarea id="dependencies" placeholder="https://github.com/Luke100000/ImmersiveAircraft"></textarea>
-
-<br>
-
-<div>
-    <label for="output-format">Output Format</label>
-    <select id="output-format">
-        <option value="markdown">Markdown</option>
-        <option value="bbcode">BBCode</option>
-        <option value="raw-url">Raw URL</option>
-        <option value="html">HTML</option>
-    </select>
-</div>
-
-<textarea id="code" readonly rows="3"></textarea>
-<label for="code"></label>
-
-<img id="preview" src="" alt="Generated Preview" hidden="hidden">
-
-<footer>
-    Not an official Minecraft service. Not approved by or associated with Mojang or Microsoft.
-</footer>
+    <footer>
+        Not an official Minecraft service. Not approved by or associated with Mojang or Microsoft.
+    </footer>
 </div>
 
 <script>

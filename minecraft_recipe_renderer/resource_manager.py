@@ -92,6 +92,7 @@ class ResourceManager:
     def post_load(self):
         self._post_load_models()
         self._post_load_tags()
+        self._post_load_recipe_tag()
 
     def _post_load_models(self):
         done = False
@@ -120,6 +121,17 @@ class ResourceManager:
                             tags.update(self.tags[tag[1:]])
                         else:
                             print(f"Missing tag: {tag}")
+
+    def _post_load_recipe_tag(self):
+        # Create a pseudo tag with all recipe outputs
+        for recipe in self.recipes.values():
+            if hasattr(recipe, "result"):
+                namespace, path = recipe.result.id.split(":", 1)
+                t = namespace + ":recipes"
+                print(t)
+                if t not in self.tags:
+                    self.tags[t] = set()
+                self.tags[t].add(recipe.result.id)
 
     def load_recipe(self, path: Path, name: str):
         r = json.loads(path.read_text())
@@ -240,7 +252,11 @@ class ResourceManager:
             hashlib.sha256((repo + str(tag)).encode()).hexdigest()
         )
 
-        if not cache_dir.exists():
+        if cache_dir.exists():
+            repo = Repo(cache_dir)
+            repo.remotes.origin.pull()
+            repo.git.checkout(tag)
+        else:
             self.cache.mkdir(parents=True, exist_ok=True)
             repo = Repo.clone_from(repo, cache_dir)
             repo.git.checkout(tag)
