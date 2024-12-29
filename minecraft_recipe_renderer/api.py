@@ -180,6 +180,10 @@ def render_recipes(
             max_variations=max_variations if animated else 1,
             print_name=len(filtered_locations) > 1,
         )
+
+        if not image:
+            image.append(Image.new("RGBA", (16, 16), color=(0, 0, 0, 0)))
+
         images.append((image, x, y))
 
         size = image[0].size
@@ -240,7 +244,7 @@ async def cached_render_recipes(
 
 def parse_dependencies(minecraft_version: str, dependencies: str) -> list[str]:
     return [
-        sanitize_url(known_dependencies[d] if d in known_dependencies else d)
+        sanitize_url(known_dependencies[d] if d in known_dependencies else d.strip())
         for d in (dependencies.split(";") + [minecraft_version])
         if d.strip()
     ]
@@ -275,6 +279,7 @@ def setup(app: FastAPI):
                 "minecraft:iron_ingot;minecraft:gold_ingot",
                 "minecraft:iron_ingot;#minecraft:ingots",
             ],
+            min_length=1,
         ),
         minecraft_version: str = Query(
             default="1.20.1",
@@ -323,6 +328,7 @@ def setup(app: FastAPI):
                 "minecraft:iron_ingot;minecraft:gold_ingot",
                 "minecraft:iron_ingot;#minecraft:ingots",
             ],
+            min_length=1,
         ),
         minecraft_version: str = Query(
             default="1.20.1",
@@ -385,6 +391,7 @@ def setup(app: FastAPI):
                 "minecraft:iron_ingot;minecraft:gold_ingot",
                 "minecraft:.*_ingot",
             ],
+            min_length=1,
         ),
         minecraft_version: str = Query(
             default="1.20.1",

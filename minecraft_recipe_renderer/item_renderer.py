@@ -139,11 +139,12 @@ class ItemRenderer:
                 [to_pos[0], from_pos[1], to_pos[2]],
                 [to_pos[0], to_pos[1], to_pos[2]],
                 [from_pos[0], to_pos[1], to_pos[2]],
-            ]
+            ],
+            dtype=float,
         )
 
         # Apply rotation
-        cuboid_vertices -= element.rotation.origin
+        cuboid_vertices -= np.asarray(element.rotation.origin, dtype=float)
         cuboid_vertices = rotate(
             cuboid_vertices,
             [
