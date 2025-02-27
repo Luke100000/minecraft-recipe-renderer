@@ -103,7 +103,7 @@ def render_atlas(
     cols = min(row_size, len(locations))
     rows = (len(locations) + row_size - 1) // row_size
     border = 6 if background == "fancy" else 0
-    margin = 0 if background == "none" else 2
+    margin = 0 if background == "none" else 1
     canvas = Canvas(
         cols * (16 + margin * 2) + border * 2,
         rows * (16 + margin * 2) + border * 2,
@@ -196,7 +196,7 @@ def render_recipes(
             x = 0
             y += last_h
             last_h = 0
-            if y > (2048 if animated else 4096):
+            if y > (2048 if animated else 8192):
                 break
 
     if len(images) == 1:

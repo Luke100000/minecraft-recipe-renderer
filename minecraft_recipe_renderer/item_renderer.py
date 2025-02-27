@@ -111,6 +111,27 @@ class ItemRenderer:
             return canvas
         else:
             texture1 = self.get_texture(model.textures.get("layer0", "missing"))
+
+            # Default color
+            item_location = model.location.replace(":item/", ":")
+            if item_location in self.resource_manager.default_item_colors:
+                img_array = np.array(texture1, dtype=np.float32)
+                packed_color = self.resource_manager.default_item_colors[item_location]
+                color = (
+                    np.array(
+                        [
+                            (packed_color >> 16) & 0xFF,
+                            (packed_color >> 8) & 0xFF,
+                            packed_color & 0xFF,
+                        ],
+                        dtype=np.float32,
+                    )
+                    / 255.0
+                )
+                img_array[..., :3] *= color
+                img_array = np.clip(img_array, 0, 255).astype(np.uint8)
+                texture1 = Image.fromarray(img_array, "RGBA")
+
             if "layer1" in model.textures:
                 texture2 = self.get_texture(model.textures["layer1"])
                 texture = Image.new("RGBA", texture1.size)

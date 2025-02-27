@@ -92,45 +92,48 @@ class Canvas:
         self.draw(self.image, tex, (16, 16, 24, 24), (x + width - 8, y + height - 8))
         self.draw(self.image, tex, (0, 16, 8, 24), (x, y + height - 8))
 
-        self.draw(
-            self.image,
-            tex,
-            (7, 7, 16, 16),
-            (x + 8, y + 8),
-            (width - 16, height - 16),
-        )
+        if width > 16 and height > 16:
+            self.draw(
+                self.image,
+                tex,
+                (7, 7, 16, 16),
+                (x + 8, y + 8),
+                (width - 16, height - 16),
+            )
 
-        self.draw(
-            self.image,
-            tex,
-            (7, 0, 16, 8),
-            (x + 8, y),
-            (width - 16, 8),
-        )
+        if width > 16:
+            self.draw(
+                self.image,
+                tex,
+                (7, 0, 16, 8),
+                (x + 8, y),
+                (width - 16, 8),
+            )
 
-        self.draw(
-            self.image,
-            tex,
-            (7, 16, 16, 24),
-            (x + 8, y + height - 8),
-            (width - 16, 8),
-        )
+            self.draw(
+                self.image,
+                tex,
+                (7, 16, 16, 24),
+                (x + 8, y + height - 8),
+                (width - 16, 8),
+            )
 
-        self.draw(
-            self.image,
-            tex,
-            (0, 7, 8, 16),
-            (x, y + 8),
-            (8, height - 16),
-        )
+        if height > 16:
+            self.draw(
+                self.image,
+                tex,
+                (0, 7, 8, 16),
+                (x, y + 8),
+                (8, height - 16),
+            )
 
-        self.draw(
-            self.image,
-            tex,
-            (16, 7, 24, 16),
-            (x + width - 8, y + 8),
-            (8, height - 16),
-        )
+            self.draw(
+                self.image,
+                tex,
+                (16, 7, 24, 16),
+                (x + width - 8, y + 8),
+                (8, height - 16),
+            )
 
     def texture(self, texture: str, x: int, y: int):
         tex = load_texture(texture)
@@ -164,7 +167,7 @@ class Canvas:
             )
 
         base.paste(
-            cropped_texture,
+            cropped_texture.convert("RGB"),
             (position[0] * self.resolution, position[1] * self.resolution),
             mask=cropped_texture,
         )

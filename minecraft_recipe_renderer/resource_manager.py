@@ -74,6 +74,7 @@ class ResourceManager:
         self.models: dict[str, Model] = {}
         self.lang: dict[str, str] = {}
         self.textures: dict[str, Path] = {}
+        self.default_item_colors: dict[str, int] = {}
 
         self.models["minecraft:builtin/generated"] = DEFAULT_ITEM_MODEL
 
@@ -128,36 +129,47 @@ class ResourceManager:
             if hasattr(recipe, "result"):
                 namespace, path = recipe.result.id.split(":", 1)
                 t = namespace + ":recipes"
-                print(t)
                 if t not in self.tags:
                     self.tags[t] = set()
                 self.tags[t].add(recipe.result.id)
 
     def load_recipe(self, path: Path, name: str):
-        r = json.loads(path.read_text())
-        crafting_type = to_location(r["type"])
-        if crafting_type in RECIPE_REGISTRY:
-            self.recipes[name] = RECIPE_REGISTRY[crafting_type](r)
+        try:
+            r = json.loads(path.read_text())
+            crafting_type = to_location(r["type"])
+            if crafting_type in RECIPE_REGISTRY:
+                self.recipes[name] = RECIPE_REGISTRY[crafting_type](r)
+        except Exception:
+            print(f"Error loading recipe: {name}")
 
     def load_tags(self, path: Path, name: str):
-        tags = json.loads(path.read_text())
-        processed_tags = set()
-        for tag in tags["values"]:
-            if isinstance(tag, str):
-                processed_tags.add(to_location(tag))
-            else:
-                processed_tags.add(to_location(tag["id"]))
+        try:
+            tags = json.loads(path.read_text())
+            processed_tags = set()
+            for tag in tags["values"]:
+                if isinstance(tag, str):
+                    processed_tags.add(to_location(tag))
+                else:
+                    processed_tags.add(to_location(tag["id"]))
 
-        if "replace" in tags and tags["replace"] or name not in self.tags:
-            self.tags[name] = processed_tags
-        else:
-            self.tags[name] |= processed_tags
+            if "replace" in tags and tags["replace"] or name not in self.tags:
+                self.tags[name] = processed_tags
+            else:
+                self.tags[name] |= processed_tags
+        except Exception:
+            print(f"Error loading tags: {name}")
 
     def load_model(self, path: Path, name: str):
-        self.models[name] = Model(name, json.loads(path.read_text()))
+        try:
+            self.models[name] = Model(name, json.loads(path.read_text()))
+        except Exception:
+            print(f"Error loading model: {name}")
 
     def load_lang(self, path: Path):
-        self.lang.update(json.loads(path.read_text()))
+        try:
+            self.lang.update(json.loads(path.read_text()))
+        except Exception:
+            print(f"Error loading lang: {path}")
 
     def register_texture(self, path: Path, name: str):
         self.textures[name] = path
@@ -190,6 +202,11 @@ class ResourceManager:
                 self.load_tags(path, name)
 
             for path, name in list_files(
+                root / f"data/{namespace}/tags/items", "json", namespace
+            ):
+                self.load_tags(path, name)
+
+            for path, name in list_files(
                 root / f"assets/{namespace}/models", "json", namespace
             ):
                 self.load_model(path, name)
@@ -203,6 +220,10 @@ class ResourceManager:
                 root / f"assets/{namespace}/textures", "png", namespace
             ):
                 self.register_texture(path, name)
+
+            colors_path = root / f"assets/{namespace}/default_item_colors.json"
+            if colors_path.exists():
+                self.default_item_colors.update(json.loads(colors_path.read_text()))
 
     def scan_resources(self, path: Path):
         """
