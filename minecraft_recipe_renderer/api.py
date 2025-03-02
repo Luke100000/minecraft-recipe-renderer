@@ -184,20 +184,21 @@ def render_recipes(
         if not image:
             image.append(Image.new("RGBA", (16, 16), color=(0, 0, 0, 0)))
 
-        images.append((image, x, y))
-
         size = image[0].size
-        w = max(w, x + size[0])
-        h = max(h, y + size[1])
-        last_h = max(last_h, size[1])
-
-        x += size[0]
-        if x > row_width:
+        if x + size[0] > row_width and x > 0:
             x = 0
             y += last_h
             last_h = 0
             if y > (2048 if animated else 8192):
                 break
+
+        images.append((image, x, y))
+
+        w = max(w, x + size[0])
+        h = max(h, y + size[1])
+        last_h = max(last_h, size[1])
+
+        x += size[0]
 
     if len(images) == 1:
         atlases = [i[0][0] for i in images]
