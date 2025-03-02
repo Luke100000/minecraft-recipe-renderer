@@ -84,7 +84,7 @@ def render_atlas(
     locations = [
         (
             sorted(manager.tags.get(location[1:], []))
-            if location.startswith("#")
+            if (location.startswith("#") or location.startswith("_"))
             else [location]
         )
         for location in [to_location(location) for location in locations.split(";")]
