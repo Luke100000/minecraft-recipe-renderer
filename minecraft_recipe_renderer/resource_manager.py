@@ -211,9 +211,8 @@ class ResourceManager:
             ):
                 self.load_model(path, name)
 
-            for path, name in list_files(
-                root / f"assets/{namespace}/lang", "json", namespace
-            ):
+            lang_path = root / f"assets/{namespace}/lang/en_us.json"
+            if lang_path.exists():
                 self.load_lang(path)
 
             for path, name in list_files(
