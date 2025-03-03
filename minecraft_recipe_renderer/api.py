@@ -33,7 +33,9 @@ known_dependencies = {
 }
 
 
-@cached(cache=TTLCache(maxsize=8, ttl=3600), key=lambda dependencies: str(dependencies))
+@cached(
+    cache=TTLCache(maxsize=8, ttl=21600), key=lambda dependencies: str(dependencies)
+)
 def load_manager(dependencies: list[str]) -> ResourceManager:
     manager = ResourceManager(Path("cache/mcr/"))
     for dep in dependencies:
@@ -62,7 +64,7 @@ def render_item(location: str, dependencies: list[str], resolution: int) -> byte
     return encode_image(texture)
 
 
-@cache(expire=3600, coder=BytesCoder())
+@cache(expire=21600, coder=BytesCoder())
 async def cached_render_item(
     locations: str, dependencies: list[str], resolution: int
 ) -> bytes:
@@ -126,7 +128,7 @@ def render_atlas(
     return encode_image(canvas.image)
 
 
-@cache(expire=3600, coder=BytesCoder())
+@cache(expire=21600, coder=BytesCoder())
 async def cached_render_atlas(
     locations: str,
     dependencies: list[str],
@@ -230,7 +232,7 @@ def render_recipes(
         return encode_image(atlases[0])
 
 
-@cache(expire=3600, coder=BytesCoder())
+@cache(expire=21600, coder=BytesCoder())
 async def cached_render_recipes(
     locations: str,
     dependencies: list[str],
@@ -315,7 +317,11 @@ def setup(app: FastAPI):
         except ValueError as e:
             return Response(status_code=422, content=str(e))
 
-        return Response(content=result, media_type="image/png")
+        return Response(
+            content=result,
+            media_type="image/png",
+            headers={"Cache-Control": "public, max-age=21600, immutable"},
+        )
 
     @app.get(
         "/atlas",
@@ -377,7 +383,11 @@ def setup(app: FastAPI):
         except ValueError as e:
             return Response(status_code=422, content=str(e))
 
-        return Response(content=result, media_type="image/png")
+        return Response(
+            content=result,
+            media_type="image/png",
+            headers={"Cache-Control": "public, max-age=21600, immutable"},
+        )
 
     @app.get(
         "/recipes",
@@ -442,5 +452,7 @@ def setup(app: FastAPI):
             return Response(status_code=422, content=str(e))
 
         return Response(
-            content=result, media_type="image/gif" if animated else "image/png"
+            content=result,
+            media_type="image/gif" if animated else "image/png",
+            headers={"Cache-Control": "public, max-age=21600, immutable"},
         )
